@@ -37,8 +37,15 @@ const role = computed(() => page.props.currentStore?.role);
 const mainNavItems = computed<NavItem[]>(() => {
     const items: NavItem[] = [
         { title: 'Dashboard', href: dashboard(), icon: LayoutGrid },
-        { title: 'POS', href: pos(), icon: ShoppingCart },
-        { title: 'Sales', href: salesIndex(), icon: Receipt },
+        {
+            title: 'Sales',
+            href: salesIndex(),
+            icon: Receipt,
+            children: [
+                { title: 'POS', href: pos(), icon: ShoppingCart },
+                { title: 'History', href: salesIndex(), icon: Receipt },
+            ],
+        },
         { title: 'Products', href: productsIndex(), icon: Package },
         { title: 'Customers', href: customersIndex(), icon: Users },
         { title: 'E-Wallet', href: ewalletIndex(), icon: Wallet },

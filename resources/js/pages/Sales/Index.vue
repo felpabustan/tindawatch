@@ -12,7 +12,10 @@ import { index as salesIndex, pos } from '@/routes/sales';
 
 defineOptions({
     layout: {
-        breadcrumbs: [{ title: 'Sales', href: salesIndex() }],
+        breadcrumbs: [
+            { title: 'Sales', href: salesIndex() },
+            { title: 'History', href: salesIndex() },
+        ],
     },
 });
 
@@ -234,14 +237,14 @@ function isPresetActive(
 </script>
 
 <template>
-    <Head title="Sales" />
+    <Head title="Sales History" />
 
     <div class="flex flex-1 flex-col gap-6 p-4 md:p-6">
         <div
             class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between"
         >
             <Heading
-                title="Sales"
+                title="History"
                 description="Review takings, find a receipt, and spot how you were paid."
             />
             <Button as-child>
