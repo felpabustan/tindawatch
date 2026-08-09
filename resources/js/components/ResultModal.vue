@@ -26,11 +26,7 @@ const { open, kind, title, subtitle, description } = useResultModal();
                         class="size-10 text-white"
                         :stroke-width="3"
                     />
-                    <X
-                        v-else
-                        class="size-10 text-white"
-                        :stroke-width="3"
-                    />
+                    <X v-else class="size-10 text-white" :stroke-width="3" />
                 </div>
                 <div class="space-y-1">
                     <DialogTitle class="text-xl font-semibold">

@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\Store;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -44,13 +45,16 @@ class HandleInertiaRequests extends Middleware
         $role = null;
 
         if ($user) {
-            $stores = $user->stores()
+            /** @var Collection<int, Store> $storeModels */
+            $storeModels = $user->stores()
                 ->orderBy('name')
-                ->get(['stores.id', 'stores.name'])
+                ->get(['stores.id', 'stores.name']);
+
+            $stores = $storeModels
                 ->map(fn (Store $store) => [
                     'id' => $store->id,
                     'name' => $store->name,
-                    'role' => $store->pivot->role,
+                    'role' => $store->pivot?->role,
                 ])
                 ->values()
                 ->all();

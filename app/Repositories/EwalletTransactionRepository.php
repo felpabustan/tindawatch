@@ -6,7 +6,7 @@ use App\Contracts\Repositories\EwalletTransactionRepositoryInterface;
 use App\Models\EwalletTransaction;
 use App\Models\Store;
 use Carbon\CarbonInterface;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -26,6 +26,7 @@ class EwalletTransactionRepository implements EwalletTransactionRepositoryInterf
         return EwalletTransaction::query()
             ->where('store_id', $store->id)
             ->where('created_at', '>=', $since)
+            ->toBase()
             ->selectRaw('COUNT(*) as count, COALESCE(SUM(amount), 0) as amount, COALESCE(SUM(service_fee), 0) as fees')
             ->first();
     }
@@ -58,11 +59,13 @@ class EwalletTransactionRepository implements EwalletTransactionRepositoryInterf
 
     public function totalsByProviderBetween(Store $store, CarbonInterface $from, CarbonInterface $to): Collection
     {
+        /** @var Collection<int, object{provider: mixed, type: mixed, count: mixed, amount: mixed, fees: mixed}> */
         return EwalletTransaction::query()
             ->join('ewallet_providers', 'ewallet_providers.id', '=', 'ewallet_transactions.provider_id')
             ->where('ewallet_transactions.store_id', $store->id)
             ->whereBetween('ewallet_transactions.created_at', [$from, $to])
             ->groupBy('ewallet_providers.name', 'ewallet_transactions.type')
+            ->toBase()
             ->get([
                 'ewallet_providers.name as provider',
                 'ewallet_transactions.type',

@@ -129,7 +129,7 @@ class RecordSale
                 );
             }
 
-            if ($paymentMethod === PaymentMethod::Utang && $customer) {
+            if ($paymentMethod === PaymentMethod::Utang) {
                 $this->customers->incrementCreditBalance($customer, $total);
             }
 

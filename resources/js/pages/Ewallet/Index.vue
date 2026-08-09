@@ -16,8 +16,8 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { cn } from '@/lib/utils';
 import { formatPesos } from '@/lib/money';
+import { cn } from '@/lib/utils';
 import { index as ewalletIndex } from '@/routes/ewallet';
 
 defineOptions({
@@ -93,7 +93,9 @@ function openAddProvider() {
     <Head title="E-Wallet" />
 
     <div class="flex flex-1 flex-col gap-6 p-4">
-        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div
+            class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+        >
             <Heading title="E-Wallet" />
             <div class="flex flex-wrap gap-2">
                 <Button
@@ -252,7 +254,12 @@ function openAddProvider() {
                     </div>
                     <div class="grid gap-2">
                         <Label>Amount</Label>
-                        <Input name="amount" type="number" step="0.01" required />
+                        <Input
+                            name="amount"
+                            type="number"
+                            step="0.01"
+                            required
+                        />
                         <InputError :message="errors.amount" />
                     </div>
                     <div class="grid gap-2">

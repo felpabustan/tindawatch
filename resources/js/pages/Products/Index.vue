@@ -58,7 +58,11 @@ const editProduct = ref<ProductRow | null>(null);
 const stockProduct = ref<ProductRow | null>(null);
 
 function submitSearch() {
-    router.get(productsIndex.url(), { q: search.value }, { preserveState: true });
+    router.get(
+        productsIndex.url(),
+        { q: search.value },
+        { preserveState: true },
+    );
 }
 </script>
 
@@ -66,7 +70,9 @@ function submitSearch() {
     <Head title="Products" />
 
     <div class="flex flex-1 flex-col gap-6 p-4">
-        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div
+            class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+        >
             <Heading title="Products" />
             <Button v-if="canManage" @click="createOpen = true">
                 <Plus />
@@ -351,7 +357,9 @@ function submitSearch() {
                                 id="edit-ppc"
                                 name="pieces_per_case"
                                 type="number"
-                                :default-value="editProduct.pieces_per_case ?? ''"
+                                :default-value="
+                                    editProduct.pieces_per_case ?? ''
+                                "
                             />
                         </div>
                     </div>
@@ -398,7 +406,9 @@ function submitSearch() {
                             @click="editProduct = null"
                             >Cancel</Button
                         >
-                        <Button type="submit" :disabled="processing">Save</Button>
+                        <Button type="submit" :disabled="processing"
+                            >Save</Button
+                        >
                     </DialogFooter>
                 </Form>
             </DialogContent>
@@ -413,7 +423,8 @@ function submitSearch() {
                     <DialogTitle>Adjust stock</DialogTitle>
                 </DialogHeader>
                 <p class="text-sm text-muted-foreground">
-                    {{ stockProduct.name }} · {{ stockProduct.stock_qty }} on hand
+                    {{ stockProduct.name }} · {{ stockProduct.stock_qty }} on
+                    hand
                 </p>
                 <Form
                     v-bind="ProductController.adjustStock.form(stockProduct.id)"
@@ -436,7 +447,12 @@ function submitSearch() {
                     </div>
                     <div class="grid gap-2">
                         <Label for="stock-qty">Quantity</Label>
-                        <Input id="stock-qty" name="quantity" type="number" required />
+                        <Input
+                            id="stock-qty"
+                            name="quantity"
+                            type="number"
+                            required
+                        />
                         <InputError :message="errors.quantity" />
                     </div>
                     <div class="grid gap-2">
@@ -450,7 +466,9 @@ function submitSearch() {
                             @click="stockProduct = null"
                             >Cancel</Button
                         >
-                        <Button type="submit" :disabled="processing">Save</Button>
+                        <Button type="submit" :disabled="processing"
+                            >Save</Button
+                        >
                     </DialogFooter>
                 </Form>
             </DialogContent>

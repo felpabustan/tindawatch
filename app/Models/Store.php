@@ -4,12 +4,31 @@ namespace App\Models;
 
 use App\Enums\StoreRole;
 use Database\Factories\StoreFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property int $id
+ * @property int $owner_id
+ * @property string $name
+ * @property string|null $address
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read User $owner
+ * @property-read StoreUser|null $pivot
+ * @property-read Collection<int, User> $users
+ * @property-read Collection<int, Category> $categories
+ * @property-read Collection<int, Product> $products
+ * @property-read Collection<int, Customer> $customers
+ * @property-read Collection<int, Sale> $sales
+ * @property-read Collection<int, EwalletProvider> $ewalletProviders
+ * @property-read Collection<int, ActivityLog> $activityLogs
+ */
 class Store extends Model
 {
     /** @use HasFactory<StoreFactory> */
@@ -29,6 +48,7 @@ class Store extends Model
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class)
+            ->using(StoreUser::class)
             ->withPivot('role')
             ->withTimestamps();
     }
@@ -71,6 +91,9 @@ class Store extends Model
             return null;
         }
 
-        return StoreRole::from($membership->pivot->role);
+        /** @var StoreUser $pivot */
+        $pivot = $membership->pivot;
+
+        return StoreRole::from($pivot->role);
     }
 }

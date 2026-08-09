@@ -7,11 +7,14 @@ use App\Models\Product;
 use App\Models\StockMovement;
 use App\Models\Store;
 use App\Models\User;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 interface ProductRepositoryInterface
 {
+    /**
+     * @return LengthAwarePaginator<int, Product>
+     */
     public function paginateForStore(Store $store, ?string $search = null, int $perPage = 20): LengthAwarePaginator;
 
     /**

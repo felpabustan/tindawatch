@@ -11,6 +11,10 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
 
+        if (! file_exists(database_path('testing.sqlite'))) {
+            touch(database_path('testing.sqlite'));
+        }
+
         $this->withoutVite();
     }
 

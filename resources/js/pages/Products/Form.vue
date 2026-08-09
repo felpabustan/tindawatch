@@ -73,7 +73,11 @@ defineOptions({
 
             <div class="grid gap-2">
                 <Label for="sku">SKU / barcode</Label>
-                <Input id="sku" name="sku" :default-value="product?.sku ?? ''" />
+                <Input
+                    id="sku"
+                    name="sku"
+                    :default-value="product?.sku ?? ''"
+                />
                 <InputError :message="errors.sku" />
             </div>
 

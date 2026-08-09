@@ -13,11 +13,13 @@ export function initializeFlashResult(): void {
 
         if (data.type === 'success' || data.type === 'info') {
             showResult('success', data.message);
+
             return;
         }
 
         if (data.type === 'warning') {
             showResult('failure', data.message);
+
             return;
         }
 

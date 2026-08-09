@@ -12,7 +12,10 @@ class StoreRepository implements StoreRepositoryInterface
 {
     public function forUser(User $user): Collection
     {
-        return $user->stores()->orderBy('name')->get();
+        /** @var Collection<int, Store> $stores */
+        $stores = $user->stores()->orderBy('name')->get();
+
+        return $stores;
     }
 
     public function ownedCount(User $user): int
@@ -39,9 +42,12 @@ class StoreRepository implements StoreRepositoryInterface
 
     public function staffForStore(Store $store): Collection
     {
-        return $store->users()
+        /** @var Collection<int, User> $staff */
+        $staff = $store->users()
             ->orderBy('name')
             ->get(['users.id', 'users.name']);
+
+        return $staff;
     }
 
     public function userBelongsToStore(Store $store, int $userId): bool

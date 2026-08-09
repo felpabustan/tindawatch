@@ -67,12 +67,17 @@ class ReportController extends Controller
         return response()->streamDownload(function () use ($type, $reports) {
             $out = fopen('php://output', 'w');
 
+            if ($out === false) {
+                throw new \RuntimeException('Unable to open CSV output stream.');
+            }
+
             match ($type) {
                 'sales' => $this->exportSales($out, $reports['sales']),
                 'bestsellers' => $this->exportBestsellers($out, $reports['bestsellers']),
                 'inventory' => $this->exportInventory($out, $reports['inventory']),
                 'utang' => $this->exportUtang($out, $reports['utang']),
                 'ewallet' => $this->exportEwallet($out, $reports['ewallet']),
+                default => throw new \InvalidArgumentException("Unsupported export type [{$type}]."),
             };
 
             fclose($out);
@@ -176,7 +181,7 @@ class ReportController extends Controller
 
     /**
      * @param  resource  $out
-     * @param  array{total_amount: int, count: int, by_payment: list<array{method: string, label: string, total: int, count: int}>, daily: list<array{date: string, label: string, total: int, count: int}>}  $sales
+     * @param  array{total_amount: int, count: int, by_payment: array<int, array{method: string, label: string, total: int, count: int}>, daily: array<int, array{date: string, label: string, total: int, count: int}>}  $sales
      */
     private function exportSales($out, array $sales): void
     {
@@ -194,7 +199,7 @@ class ReportController extends Controller
 
     /**
      * @param  resource  $out
-     * @param  list<array{product_id: int, name: string, quantity: int, revenue: int}>  $rows
+     * @param  array<int, array{product_id: int, name: string, quantity: int, revenue: int}>  $rows
      */
     private function exportBestsellers($out, array $rows): void
     {
@@ -207,7 +212,7 @@ class ReportController extends Controller
 
     /**
      * @param  resource  $out
-     * @param  array{products: list<array{id: int, name: string, sku: string|null, stock_qty: int, cost_price: int, sell_price: int, value: int, is_low_stock: bool}>, total_value: int, low_stock_count: int}  $inventory
+     * @param  array{products: array<int, array{id: int, name: string, sku: string|null, stock_qty: int, cost_price: int, sell_price: int, value: int, is_low_stock: bool}>, total_value: int, low_stock_count: int}  $inventory
      */
     private function exportInventory($out, array $inventory): void
     {
@@ -228,7 +233,7 @@ class ReportController extends Controller
 
     /**
      * @param  resource  $out
-     * @param  array{open_balance: int, customers: list<array{id: int, name: string, contact: string|null, credit_balance: int}>, payments: list<array{id: int, customer: string|null, amount: int, paid_at: string|null, received_by: string|null}>, payments_total: int}  $utang
+     * @param  array{open_balance: int, customers: array<int, array{id: int, name: string, contact: string|null, credit_balance: int}>, payments: array<int, array{id: int, customer: string|null, amount: int, paid_at: string|null, received_by: string|null}>, payments_total: int}  $utang
      */
     private function exportUtang($out, array $utang): void
     {
@@ -257,7 +262,7 @@ class ReportController extends Controller
 
     /**
      * @param  resource  $out
-     * @param  array{providers: list<array{id: int, name: string, logo: string|null, current_float: int, is_low_float: bool}>, by_provider: list<array{provider: string, cash_in: int, cash_out: int, fees: int, count: int}>, totals: array{cash_in: int, cash_out: int, fees: int, count: int}}  $ewallet
+     * @param  array{providers: array<int, array{id: int, name: string, logo: string|null, current_float: int, is_low_float: bool}>, by_provider: array<int, array{provider: string, cash_in: int, cash_out: int, fees: int, count: int}>, totals: array{cash_in: int, cash_out: int, fees: int, count: int}}  $ewallet
      */
     private function exportEwallet($out, array $ewallet): void
     {

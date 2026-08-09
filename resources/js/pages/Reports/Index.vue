@@ -167,28 +167,21 @@ function utangCustomerPdfUrl(customerId: number): string {
     <Head title="Reports" />
 
     <div class="flex flex-1 flex-col gap-6 p-4">
-        <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+        <div
+            class="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between"
+        >
             <Heading title="Reports" />
             <div class="flex flex-wrap items-end gap-3">
                 <div class="grid gap-1">
                     <Label for="from">From</Label>
-                    <Input
-                        id="from"
-                        v-model="from"
-                        type="date"
-                        class="w-40"
-                    />
+                    <Input id="from" v-model="from" type="date" class="w-40" />
                 </div>
                 <div class="grid gap-1">
                     <Label for="to">To</Label>
                     <Input id="to" v-model="to" type="date" class="w-40" />
                 </div>
                 <Button type="button" @click="applyFilters()">Apply</Button>
-                <Button
-                    v-if="section === 'utang'"
-                    variant="outline"
-                    as-child
-                >
+                <Button v-if="section === 'utang'" variant="outline" as-child>
                     <a :href="utangPdfUrl()">
                         <FileText />
                         PDF
@@ -225,7 +218,9 @@ function utangCustomerPdfUrl(customerId: number): string {
                     </div>
                 </div>
                 <div class="rounded-xl border p-4">
-                    <div class="text-sm text-muted-foreground">Transactions</div>
+                    <div class="text-sm text-muted-foreground">
+                        Transactions
+                    </div>
                     <div class="mt-1 text-2xl font-semibold">
                         {{ reports.sales.count }}
                     </div>
@@ -294,7 +289,9 @@ function utangCustomerPdfUrl(customerId: number): string {
                             :key="row.product_id"
                             class="border-b"
                         >
-                            <td class="px-3 py-2 font-medium">{{ row.name }}</td>
+                            <td class="px-3 py-2 font-medium">
+                                {{ row.name }}
+                            </td>
                             <td class="px-3 py-2">{{ row.quantity }}</td>
                             <td class="px-3 py-2">
                                 {{ formatPesos(row.revenue) }}
@@ -349,7 +346,9 @@ function utangCustomerPdfUrl(customerId: number): string {
                             class="border-b"
                         >
                             <td class="px-3 py-2">
-                                <div class="font-medium">{{ product.name }}</div>
+                                <div class="font-medium">
+                                    {{ product.name }}
+                                </div>
                                 <div class="text-xs text-muted-foreground">
                                     {{ product.sku || '—' }}
                                 </div>

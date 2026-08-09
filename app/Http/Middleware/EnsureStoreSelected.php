@@ -23,9 +23,9 @@ class EnsureStoreSelected
         $storeId = $request->session()->get('current_store_id');
 
         if ($storeId) {
-            $store = Store::query()->find($storeId);
+            $store = Store::query()->find((int) $storeId);
 
-            if ($store && $user->belongsToStore($store)) {
+            if ($store instanceof Store && $user->belongsToStore($store)) {
                 $request->attributes->set('currentStore', $store);
 
                 return $next($request);
@@ -34,6 +34,7 @@ class EnsureStoreSelected
             $request->session()->forget('current_store_id');
         }
 
+        /** @var Store|null $store */
         $store = $user->stores()->orderBy('stores.id')->first();
 
         if ($store) {

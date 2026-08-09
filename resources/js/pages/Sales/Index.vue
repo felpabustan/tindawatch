@@ -208,7 +208,9 @@ function clearFilters() {
     });
 }
 
-function isPresetActive(preset: 'today' | 'yesterday' | '7days' | 'month'): boolean {
+function isPresetActive(
+    preset: 'today' | 'yesterday' | '7days' | 'month',
+): boolean {
     if (preset === 'today') {
         return props.filters.from === today() && props.filters.to === today();
     }
@@ -220,10 +222,14 @@ function isPresetActive(preset: 'today' | 'yesterday' | '7days' | 'month'): bool
     }
 
     if (preset === '7days') {
-        return props.filters.from === daysAgo(6) && props.filters.to === today();
+        return (
+            props.filters.from === daysAgo(6) && props.filters.to === today()
+        );
     }
 
-    return props.filters.from === startOfMonth() && props.filters.to === today();
+    return (
+        props.filters.from === startOfMonth() && props.filters.to === today()
+    );
 }
 </script>
 
@@ -290,7 +296,7 @@ function isPresetActive(preset: 'today' | 'yesterday' | '7days' | 'month'): bool
                             {{ row.label }}
                             <span class="text-xs">· {{ row.count }}</span>
                         </span>
-                        <span class="font-medium tabular-nums text-foreground">
+                        <span class="font-medium text-foreground tabular-nums">
                             {{ formatPesos(row.total) }}
                         </span>
                     </div>
@@ -424,12 +430,12 @@ function isPresetActive(preset: 'today' | 'yesterday' | '7days' | 'month'): bool
                 <table class="w-full text-sm">
                     <thead>
                         <tr class="text-left text-muted-foreground">
-                            <th class="pb-3 pr-3 font-medium">Date</th>
-                            <th class="pb-3 pr-3 font-medium">Amount</th>
-                            <th class="pb-3 pr-3 font-medium">Payment</th>
-                            <th class="pb-3 pr-3 font-medium">Items</th>
-                            <th class="pb-3 pr-3 font-medium">Customer</th>
-                            <th class="pb-3 pr-3 font-medium">Staff</th>
+                            <th class="pr-3 pb-3 font-medium">Date</th>
+                            <th class="pr-3 pb-3 font-medium">Amount</th>
+                            <th class="pr-3 pb-3 font-medium">Payment</th>
+                            <th class="pr-3 pb-3 font-medium">Items</th>
+                            <th class="pr-3 pb-3 font-medium">Customer</th>
+                            <th class="pr-3 pb-3 font-medium">Staff</th>
                             <th class="pb-3 font-medium">Ref</th>
                         </tr>
                     </thead>
@@ -471,7 +477,9 @@ function isPresetActive(preset: 'today' | 'yesterday' | '7days' | 'month'): bool
                                 {{ sale.customer || 'Walk-in' }}
                             </td>
                             <td class="py-3 pr-3">{{ sale.user || '—' }}</td>
-                            <td class="py-3 font-mono text-xs text-muted-foreground">
+                            <td
+                                class="py-3 font-mono text-xs text-muted-foreground"
+                            >
                                 {{ sale.payment_reference || '—' }}
                             </td>
                         </tr>
@@ -499,19 +507,13 @@ function isPresetActive(preset: 'today' | 'yesterday' | '7days' | 'month'): bool
                         size="sm"
                         :variant="link.active ? 'default' : 'outline'"
                     >
-                        <Link
-                            :href="link.url"
-                            preserve-scroll
-                            v-html="link.label"
-                        />
+                        <Link :href="link.url" preserve-scroll>
+                            <span v-html="link.label" />
+                        </Link>
                     </Button>
-                    <Button
-                        v-else
-                        size="sm"
-                        variant="outline"
-                        disabled
-                        v-html="link.label"
-                    />
+                    <Button v-else size="sm" variant="outline" disabled>
+                        <span v-html="link.label" />
+                    </Button>
                 </template>
             </div>
         </section>

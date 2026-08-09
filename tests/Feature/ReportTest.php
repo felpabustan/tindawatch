@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Enums\PaymentMethod;
 use App\Enums\StoreRole;
+use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Sale;
 use App\Models\SaleItem;
@@ -132,7 +133,7 @@ class ReportTest extends TestCase
     {
         [$owner, $store] = $this->createOwnerWithStore(['name' => 'Aling Nena']);
 
-        $customer = \App\Models\Customer::factory()->create([
+        $customer = Customer::factory()->create([
             'store_id' => $store->id,
             'name' => 'Juan Dela Cruz',
             'credit_balance' => 25000,

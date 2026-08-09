@@ -7,6 +7,7 @@ use App\Enums\StoreRole;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -29,6 +30,9 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property-read StoreUser|null $pivot
+ * @property-read Collection<int, Store> $stores
+ * @property-read Collection<int, Store> $ownedStores
  */
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
@@ -54,6 +58,7 @@ class User extends Authenticatable implements PasskeyUser
     public function stores(): BelongsToMany
     {
         return $this->belongsToMany(Store::class)
+            ->using(StoreUser::class)
             ->withPivot('role')
             ->withTimestamps();
     }
@@ -71,7 +76,10 @@ class User extends Authenticatable implements PasskeyUser
             return null;
         }
 
-        return StoreRole::from($membership->pivot->role);
+        /** @var StoreUser $pivot */
+        $pivot = $membership->pivot;
+
+        return StoreRole::from($pivot->role);
     }
 
     public function belongsToStore(Store $store): bool
