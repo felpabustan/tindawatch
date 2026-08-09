@@ -85,6 +85,7 @@ class DatabaseSeeder extends Seeder
                 ['product_id' => $products[2]->id, 'quantity' => 3],
             ],
             PaymentMethod::Cash,
+            amountTendered: 10000,
         );
 
         $recordSale->handle(
