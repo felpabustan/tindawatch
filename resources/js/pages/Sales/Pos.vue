@@ -394,7 +394,9 @@ function submitSale(
                     <Button
                         type="button"
                         size="sm"
-                        :variant="paymentMethod === 'cash' ? 'default' : 'outline'"
+                        :variant="
+                            paymentMethod === 'cash' ? 'default' : 'outline'
+                        "
                         @click="paymentMethod = 'cash'"
                     >
                         <Banknote />
@@ -403,7 +405,9 @@ function submitSale(
                     <Button
                         type="button"
                         size="sm"
-                        :variant="paymentMethod === 'gcash' ? 'default' : 'outline'"
+                        :variant="
+                            paymentMethod === 'gcash' ? 'default' : 'outline'
+                        "
                         @click="paymentMethod = 'gcash'"
                     >
                         <Smartphone />
@@ -412,7 +416,9 @@ function submitSale(
                     <Button
                         type="button"
                         size="sm"
-                        :variant="paymentMethod === 'utang' ? 'default' : 'outline'"
+                        :variant="
+                            paymentMethod === 'utang' ? 'default' : 'outline'
+                        "
                         @click="paymentMethod = 'utang'"
                     >
                         <HandCoins />
@@ -435,7 +441,10 @@ function submitSale(
                     >
                         {{ customer.name
                         }}<template v-if="paymentMethod === 'utang'">
-                            (utang {{ formatPesos(customer.credit_balance) }})</template
+                            (utang
+                            {{
+                                formatPesos(customer.credit_balance)
+                            }})</template
                         >
                     </option>
                 </select>

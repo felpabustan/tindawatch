@@ -59,21 +59,19 @@ function openEdit(store: { id: number; name: string; address: string | null }) {
     <Head title="Stores" />
 
     <div class="flex flex-1 flex-col gap-6 p-4">
-        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div
+            class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+        >
             <Heading title="Stores" />
             <div class="flex items-center gap-2">
-                <Badge variant="secondary">{{ ownedCount }}/{{ maxStores }}</Badge>
-                <Button
-                    v-if="canCreateStore"
-                    @click="createOpen = true"
+                <Badge variant="secondary"
+                    >{{ ownedCount }}/{{ maxStores }}</Badge
                 >
+                <Button v-if="canCreateStore" @click="createOpen = true">
                     <Plus />
                     Add store
                 </Button>
-                <p
-                    v-else
-                    class="text-sm text-muted-foreground"
-                >
+                <p v-else class="text-sm text-muted-foreground">
                     Limit reached
                 </p>
             </div>
@@ -91,7 +89,10 @@ function openEdit(store: { id: number; name: string; address: string | null }) {
                         <Badge v-if="store.is_current">Current</Badge>
                         <Badge variant="secondary">{{ store.role }}</Badge>
                     </div>
-                    <p v-if="store.address" class="text-sm text-muted-foreground">
+                    <p
+                        v-if="store.address"
+                        class="text-sm text-muted-foreground"
+                    >
                         {{ store.address }}
                     </p>
                 </div>

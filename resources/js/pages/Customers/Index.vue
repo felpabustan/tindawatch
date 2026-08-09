@@ -16,7 +16,10 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { formatPesos } from '@/lib/money';
-import { index as customersIndex, show as customersShow } from '@/routes/customers';
+import {
+    index as customersIndex,
+    show as customersShow,
+} from '@/routes/customers';
 
 defineOptions({
     layout: {
@@ -52,7 +55,9 @@ function submitSearch() {
     <Head title="Customers" />
 
     <div class="flex flex-1 flex-col gap-6 p-4">
-        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div
+            class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+        >
             <Heading title="Customers" />
             <Button @click="createOpen = true">
                 <Plus />
@@ -83,7 +88,9 @@ function submitSearch() {
                         :key="customer.id"
                         class="border-b"
                     >
-                        <td class="px-3 py-2 font-medium">{{ customer.name }}</td>
+                        <td class="px-3 py-2 font-medium">
+                            {{ customer.name }}
+                        </td>
                         <td class="px-3 py-2">{{ customer.contact || '—' }}</td>
                         <td class="px-3 py-2">
                             {{ formatPesos(customer.credit_balance) }}

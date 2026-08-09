@@ -41,7 +41,9 @@ const createOpen = ref(false);
     <Head title="Team" />
 
     <div class="flex flex-1 flex-col gap-6 p-4">
-        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div
+            class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+        >
             <Heading title="Team" />
             <Button @click="createOpen = true">
                 <Plus />

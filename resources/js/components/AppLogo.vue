@@ -9,7 +9,5 @@ import AppLogoIcon from '@/components/AppLogoIcon.vue';
         alt="TindaWatch"
         class="h-16 w-auto max-w-full object-contain object-left group-data-[collapsible=icon]:hidden"
     />
-    <AppLogoIcon
-        class="hidden size-8 group-data-[collapsible=icon]:block"
-    />
+    <AppLogoIcon class="hidden size-8 group-data-[collapsible=icon]:block" />
 </template>

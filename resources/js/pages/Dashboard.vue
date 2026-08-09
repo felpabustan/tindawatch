@@ -83,9 +83,7 @@ const panelClass =
             <h1 class="text-2xl font-semibold tracking-tight text-foreground">
                 Dashboard
             </h1>
-            <p class="mt-1 text-sm text-muted-foreground">
-                Today at a glance
-            </p>
+            <p class="mt-1 text-sm text-muted-foreground">Today at a glance</p>
         </div>
 
         <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -102,7 +100,9 @@ const panelClass =
                         class="size-4 text-[var(--brand-blue)] opacity-80"
                     />
                 </div>
-                <p class="mt-4 text-3xl font-semibold tracking-tight text-foreground">
+                <p
+                    class="mt-4 text-3xl font-semibold tracking-tight text-foreground"
+                >
                     {{ formatPesos(stats.sales_today) }}
                 </p>
                 <p
@@ -128,7 +128,9 @@ const panelClass =
                         class="size-4 text-[var(--brand-orange)] opacity-80"
                     />
                 </div>
-                <p class="mt-4 text-3xl font-semibold tracking-tight text-foreground">
+                <p
+                    class="mt-4 text-3xl font-semibold tracking-tight text-foreground"
+                >
                     {{ formatPesos(stats.ewallet_amount_today) }}
                 </p>
                 <p class="mt-2 text-sm text-muted-foreground">
@@ -150,7 +152,9 @@ const panelClass =
                         class="size-4 text-[var(--brand-blue)] opacity-80"
                     />
                 </div>
-                <p class="mt-4 text-3xl font-semibold tracking-tight text-foreground">
+                <p
+                    class="mt-4 text-3xl font-semibold tracking-tight text-foreground"
+                >
                     {{ formatPesos(stats.open_utang) }}
                 </p>
                 <p class="mt-2 text-sm text-muted-foreground">Customers</p>
@@ -169,7 +173,9 @@ const panelClass =
                         class="size-4 text-[var(--brand-orange)] opacity-80"
                     />
                 </div>
-                <p class="mt-4 text-3xl font-semibold tracking-tight text-foreground">
+                <p
+                    class="mt-4 text-3xl font-semibold tracking-tight text-foreground"
+                >
                     {{ stats.low_stock_count }}
                 </p>
                 <p class="mt-2 text-sm text-muted-foreground">Products</p>
@@ -182,7 +188,9 @@ const panelClass =
                     <h2 class="text-base font-semibold text-foreground">
                         Sales
                     </h2>
-                    <span class="text-xs text-muted-foreground">Last 7 days</span>
+                    <span class="text-xs text-muted-foreground"
+                        >Last 7 days</span
+                    >
                 </div>
                 <div class="flex h-40 items-end gap-2.5">
                     <div
@@ -211,7 +219,9 @@ const panelClass =
                     <h2 class="text-base font-semibold text-foreground">
                         E-wallet
                     </h2>
-                    <span class="text-xs text-muted-foreground">Last 7 days</span>
+                    <span class="text-xs text-muted-foreground"
+                        >Last 7 days</span
+                    >
                 </div>
                 <div class="flex h-40 items-end gap-2.5">
                     <div
@@ -245,9 +255,9 @@ const panelClass =
                     <table class="w-full text-sm">
                         <thead>
                             <tr class="text-left text-muted-foreground">
-                                <th class="pb-3 pr-2 font-medium">Amount</th>
-                                <th class="pb-3 pr-2 font-medium">Pay</th>
-                                <th class="pb-3 pr-2 font-medium">Staff</th>
+                                <th class="pr-2 pb-3 font-medium">Amount</th>
+                                <th class="pr-2 pb-3 font-medium">Pay</th>
+                                <th class="pr-2 pb-3 font-medium">Staff</th>
                                 <th class="pb-3 font-medium">When</th>
                             </tr>
                         </thead>
@@ -291,9 +301,9 @@ const panelClass =
                     <table class="w-full text-sm">
                         <thead>
                             <tr class="text-left text-muted-foreground">
-                                <th class="pb-3 pr-2 font-medium">Provider</th>
-                                <th class="pb-3 pr-2 font-medium">Type</th>
-                                <th class="pb-3 pr-2 font-medium">Amount</th>
+                                <th class="pr-2 pb-3 font-medium">Provider</th>
+                                <th class="pr-2 pb-3 font-medium">Type</th>
+                                <th class="pr-2 pb-3 font-medium">Amount</th>
                                 <th class="pb-3 font-medium">By</th>
                             </tr>
                         </thead>

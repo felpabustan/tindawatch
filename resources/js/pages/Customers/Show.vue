@@ -56,15 +56,14 @@ defineOptions({
     <Head :title="customer.name" />
 
     <div class="flex flex-1 flex-col gap-6 p-4">
-        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div
+            class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+        >
             <Heading
                 :title="customer.name"
                 :description="customer.contact || undefined"
             />
-            <Button
-                v-if="customer.credit_balance > 0"
-                @click="payOpen = true"
-            >
+            <Button v-if="customer.credit_balance > 0" @click="payOpen = true">
                 <Banknote />
                 Record payment
             </Button>

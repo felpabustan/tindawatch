@@ -45,7 +45,11 @@ const mainNavItems = computed<NavItem[]>(() => {
     ];
 
     if (role.value === 'owner' || role.value === 'manager') {
-        items.push({ title: 'Reports', href: reportsIndex(), icon: ChartColumn });
+        items.push({
+            title: 'Reports',
+            href: reportsIndex(),
+            icon: ChartColumn,
+        });
         items.push({ title: 'Team', href: teamIndex(), icon: UserCog });
     }
 
