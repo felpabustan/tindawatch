@@ -5,16 +5,16 @@ namespace App\Contracts\Repositories;
 use App\Models\EwalletTransaction;
 use App\Models\Store;
 use Carbon\CarbonInterface;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 interface EwalletTransactionRepositoryInterface
 {
+    /**
+     * @return LengthAwarePaginator<int, EwalletTransaction>
+     */
     public function paginateForStore(Store $store, int $perPage = 20): LengthAwarePaginator;
 
-    /**
-     * @return object{count: int|string|null, amount: int|string|null, fees: int|string|null}|null
-     */
     public function totalsSince(Store $store, CarbonInterface $since): ?object;
 
     /**
@@ -33,7 +33,7 @@ interface EwalletTransactionRepositoryInterface
     public function create(array $attributes): EwalletTransaction;
 
     /**
-     * @return Collection<int, object>
+     * @return Collection<int, object{provider: mixed, type: mixed, count: mixed, amount: mixed, fees: mixed}>
      */
     public function totalsByProviderBetween(Store $store, CarbonInterface $from, CarbonInterface $to): Collection;
 }

@@ -3,15 +3,33 @@
 namespace App\Models;
 
 use App\Enums\PaymentMethod;
-use Database\Factories\SaleFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property int $id
+ * @property int $store_id
+ * @property int $user_id
+ * @property int|null $customer_id
+ * @property int $total_amount
+ * @property PaymentMethod $payment_method
+ * @property string|null $payment_reference
+ * @property int|null $amount_tendered
+ * @property int|null $change_amount
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read int|null $items_count
+ * @property-read Store $store
+ * @property-read User|null $user
+ * @property-read Customer|null $customer
+ * @property-read Collection<int, SaleItem> $items
+ */
 class Sale extends Model
 {
-    /** @use HasFactory<SaleFactory> */
     use HasFactory;
 
     protected $fillable = [

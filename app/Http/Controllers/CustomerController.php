@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Concerns\InteractsWithStore;
 use App\Contracts\Repositories\CustomerRepositoryInterface;
+use App\Models\CreditPayment;
 use App\Models\Customer;
+use App\Models\Sale;
 use App\Services\RecordCreditPayment;
 use App\Support\Money;
 use Illuminate\Http\RedirectResponse;
@@ -73,13 +75,13 @@ class CustomerController extends Controller
                 'name' => $customer->name,
                 'contact' => $customer->contact,
                 'credit_balance' => $customer->credit_balance,
-                'sales' => $customer->sales->map(fn ($sale) => [
+                'sales' => $customer->sales->map(fn (Sale $sale) => [
                     'id' => $sale->id,
                     'total_amount' => $sale->total_amount,
                     'payment_method' => $sale->payment_method->value,
                     'created_at' => $sale->created_at?->toDateTimeString(),
                 ]),
-                'payments' => $customer->creditPayments->map(fn ($payment) => [
+                'payments' => $customer->creditPayments->map(fn (CreditPayment $payment) => [
                     'id' => $payment->id,
                     'amount' => $payment->amount,
                     'paid_at' => $payment->paid_at?->toDateTimeString(),

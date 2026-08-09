@@ -33,24 +33,24 @@ class BuildStoreReports
      *     sales: array{
      *         total_amount: int,
      *         count: int,
-     *         by_payment: list<array{method: string, label: string, total: int, count: int}>,
-     *         daily: list<array{date: string, label: string, total: int, count: int}>
+     *         by_payment: array<int, array{method: string, label: string, total: int, count: int}>,
+     *         daily: array<int, array{date: string, label: string, total: int, count: int}>
      *     },
-     *     bestsellers: list<array{product_id: int, name: string, quantity: int, revenue: int}>,
+     *     bestsellers: array<int, array{product_id: int, name: string, quantity: int, revenue: int}>,
      *     inventory: array{
-     *         products: list<array{id: int, name: string, sku: string|null, stock_qty: int, cost_price: int, sell_price: int, value: int, is_low_stock: bool}>,
+     *         products: array<int, array{id: int, name: string, sku: string|null, stock_qty: int, cost_price: int, sell_price: int, value: int, is_low_stock: bool}>,
      *         total_value: int,
      *         low_stock_count: int
      *     },
      *     utang: array{
      *         open_balance: int,
-     *         customers: list<array{id: int, name: string, contact: string|null, credit_balance: int}>,
-     *         payments: list<array{id: int, customer: string|null, amount: int, paid_at: string|null, received_by: string|null}>,
+     *         customers: array<int, array{id: int, name: string, contact: string|null, credit_balance: int}>,
+     *         payments: array<int, array{id: int, customer: string|null, amount: int, paid_at: string|null, received_by: string|null}>,
      *         payments_total: int
      *     },
      *     ewallet: array{
-     *         providers: list<array{id: int, name: string, logo: string|null, current_float: int, is_low_float: bool}>,
-     *         by_provider: list<array{provider: string, cash_in: int, cash_out: int, fees: int, count: int}>,
+     *         providers: array<int, array{id: int, name: string, logo: string|null, current_float: int, is_low_float: bool}>,
+     *         by_provider: array<int, array{provider: string, cash_in: int, cash_out: int, fees: int, count: int}>,
      *         totals: array{cash_in: int, cash_out: int, fees: int, count: int}
      *     }
      * }
@@ -73,8 +73,8 @@ class BuildStoreReports
      * @return array{
      *     total_amount: int,
      *     count: int,
-     *     by_payment: list<array{method: string, label: string, total: int, count: int}>,
-     *     daily: list<array{date: string, label: string, total: int, count: int}>
+     *     by_payment: array<int, array{method: string, label: string, total: int, count: int}>,
+     *     daily: array<int, array{date: string, label: string, total: int, count: int}>
      * }
      */
     private function salesReport(Store $store, Carbon $from, Carbon $to): array
@@ -101,7 +101,7 @@ class BuildStoreReports
 
     /**
      * @return array{
-     *     products: list<array{id: int, name: string, sku: string|null, stock_qty: int, cost_price: int, sell_price: int, value: int, is_low_stock: bool}>,
+     *     products: array<int, array{id: int, name: string, sku: string|null, stock_qty: int, cost_price: int, sell_price: int, value: int, is_low_stock: bool}>,
      *     total_value: int,
      *     low_stock_count: int
      * }
@@ -130,8 +130,8 @@ class BuildStoreReports
     /**
      * @return array{
      *     open_balance: int,
-     *     customers: list<array{id: int, name: string, contact: string|null, credit_balance: int}>,
-     *     payments: list<array{id: int, customer: string|null, amount: int, paid_at: string|null, received_by: string|null}>,
+     *     customers: array<int, array{id: int, name: string, contact: string|null, credit_balance: int}>,
+     *     payments: array<int, array{id: int, customer: string|null, amount: int, paid_at: string|null, received_by: string|null}>,
      *     payments_total: int
      * }
      */
@@ -164,8 +164,8 @@ class BuildStoreReports
 
     /**
      * @return array{
-     *     providers: list<array{id: int, name: string, logo: string|null, current_float: int, is_low_float: bool}>,
-     *     by_provider: list<array{provider: string, cash_in: int, cash_out: int, fees: int, count: int}>,
+     *     providers: array<int, array{id: int, name: string, logo: string|null, current_float: int, is_low_float: bool}>,
+     *     by_provider: array<int, array{provider: string, cash_in: int, cash_out: int, fees: int, count: int}>,
      *     totals: array{cash_in: int, cash_out: int, fees: int, count: int}
      * }
      */
@@ -185,6 +185,7 @@ class BuildStoreReports
 
         $txRows = $this->ewalletTransactions->totalsByProviderBetween($store, $from, $to);
 
+        /** @var array<string, array{provider: string, cash_in: int, cash_out: int, fees: int, count: int}> $byProvider */
         $byProvider = [];
         foreach ($providers as $provider) {
             $byProvider[$provider['name']] = [
@@ -197,9 +198,11 @@ class BuildStoreReports
         }
 
         foreach ($txRows as $row) {
-            if (! isset($byProvider[$row->provider])) {
-                $byProvider[$row->provider] = [
-                    'provider' => $row->provider,
+            $providerName = (string) $row->provider;
+
+            if (! isset($byProvider[$providerName])) {
+                $byProvider[$providerName] = [
+                    'provider' => $providerName,
                     'cash_in' => 0,
                     'cash_out' => 0,
                     'fees' => 0,
@@ -207,18 +210,16 @@ class BuildStoreReports
                 ];
             }
 
-            $type = $row->type instanceof EwalletTransactionType
-                ? $row->type->value
-                : (string) $row->type;
+            $type = (string) $row->type;
 
             if ($type === EwalletTransactionType::CashIn->value) {
-                $byProvider[$row->provider]['cash_in'] += (int) $row->amount;
+                $byProvider[$providerName]['cash_in'] += (int) $row->amount;
             } else {
-                $byProvider[$row->provider]['cash_out'] += (int) $row->amount;
+                $byProvider[$providerName]['cash_out'] += (int) $row->amount;
             }
 
-            $byProvider[$row->provider]['fees'] += (int) $row->fees;
-            $byProvider[$row->provider]['count'] += (int) $row->count;
+            $byProvider[$providerName]['fees'] += (int) $row->fees;
+            $byProvider[$providerName]['count'] += (int) $row->count;
         }
 
         $rows = array_values($byProvider);

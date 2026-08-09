@@ -3,11 +3,31 @@
 namespace App\Models;
 
 use Database\Factories\ProductFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property int $id
+ * @property int $store_id
+ * @property int|null $category_id
+ * @property string $name
+ * @property string|null $sku
+ * @property string|null $unit
+ * @property int|null $pieces_per_case
+ * @property int $cost_price
+ * @property int $sell_price
+ * @property int $stock_qty
+ * @property int $reorder_threshold
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Store $store
+ * @property-read Category|null $category
+ * @property-read Collection<int, StockMovement> $stockMovements
+ */
 class Product extends Model
 {
     /** @use HasFactory<ProductFactory> */

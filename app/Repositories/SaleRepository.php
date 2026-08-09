@@ -10,8 +10,8 @@ use App\Models\Store;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -27,10 +27,9 @@ class SaleRepository implements SaleRepositoryInterface
         $byPaymentRows = (clone $filtered)
             ->selectRaw('payment_method, count(*) as count, coalesce(sum(total_amount), 0) as total')
             ->groupBy('payment_method')
+            ->toBase()
             ->get()
-            ->keyBy(fn ($row) => $row->payment_method instanceof PaymentMethod
-                ? $row->payment_method->value
-                : (string) $row->payment_method);
+            ->keyBy(fn (object $row) => (string) $row->payment_method);
 
         return [
             'total_amount' => $totalAmount,
@@ -122,16 +121,16 @@ class SaleRepository implements SaleRepositoryInterface
         $byPaymentRows = (clone $base)
             ->selectRaw('payment_method, COUNT(*) as count, COALESCE(SUM(total_amount), 0) as total')
             ->groupBy('payment_method')
+            ->toBase()
             ->get()
-            ->keyBy(fn ($row) => $row->payment_method instanceof PaymentMethod
-                ? $row->payment_method->value
-                : (string) $row->payment_method);
+            ->keyBy(fn (object $row) => (string) $row->payment_method);
 
         $dailyRows = (clone $base)
             ->selectRaw('DATE(created_at) as day, COUNT(*) as count, COALESCE(SUM(total_amount), 0) as total')
             ->groupBy('day')
+            ->toBase()
             ->get()
-            ->keyBy(fn ($row) => Carbon::parse($row->day)->toDateString());
+            ->keyBy(fn (object $row) => Carbon::parse((string) $row->day)->toDateString());
 
         $daily = [];
         foreach (CarbonPeriod::create($from->toDateString(), $to->toDateString()) as $date) {
@@ -170,15 +169,16 @@ class SaleRepository implements SaleRepositoryInterface
             ->groupBy('sale_items.product_id', 'products.name')
             ->orderByDesc(DB::raw('SUM(sale_items.quantity)'))
             ->limit($limit)
+            ->toBase()
             ->get([
                 'sale_items.product_id',
                 'products.name',
                 DB::raw('SUM(sale_items.quantity) as quantity'),
                 DB::raw('SUM(sale_items.quantity * sale_items.price_at_sale) as revenue'),
             ])
-            ->map(fn ($row) => [
+            ->map(fn (object $row) => [
                 'product_id' => (int) $row->product_id,
-                'name' => $row->name,
+                'name' => (string) $row->name,
                 'quantity' => (int) $row->quantity,
                 'revenue' => (int) $row->revenue,
             ])
@@ -187,9 +187,11 @@ class SaleRepository implements SaleRepositoryInterface
 
     /**
      * @param  array{from: string, to: string, payment_method: string, q: string, user_id: string}  $filters
+     * @return Builder<Sale>
      */
     private function filteredQuery(Store $store, array $filters): Builder
     {
+        /** @var Builder<Sale> $query */
         $query = Sale::query()->where('store_id', $store->id);
 
         $query

@@ -7,7 +7,7 @@ use App\Models\CreditPayment;
 use App\Models\Customer;
 use App\Models\Store;
 use Carbon\CarbonInterface;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 class CustomerRepository implements CustomerRepositoryInterface

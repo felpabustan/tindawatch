@@ -12,7 +12,10 @@ class TeamRepository implements TeamRepositoryInterface
 {
     public function membersForStore(Store $store): Collection
     {
-        return $store->users()->orderBy('name')->get();
+        /** @var Collection<int, User> $members */
+        $members = $store->users()->orderBy('name')->get();
+
+        return $members;
     }
 
     public function createUser(array $attributes): User

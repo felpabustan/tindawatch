@@ -14,7 +14,10 @@ class EwalletProviders
      */
     public static function catalog(): Collection
     {
-        return collect(config('tindawatch.ewallet_providers', []))
+        /** @var array<int, array{name: string, slug: string, logo: string}> $providers */
+        $providers = config('tindawatch.ewallet_providers', []);
+
+        return collect($providers)
             ->map(fn (array $provider) => [
                 'name' => (string) $provider['name'],
                 'slug' => (string) $provider['slug'],
@@ -24,11 +27,11 @@ class EwalletProviders
     }
 
     /**
-     * @return list<string>
+     * @return array<int, string>
      */
     public static function names(): array
     {
-        return self::catalog()->pluck('name')->all();
+        return self::catalog()->map(fn (array $provider) => $provider['name'])->all();
     }
 
     public static function isAllowed(string $name): bool
@@ -42,7 +45,9 @@ class EwalletProviders
             return null;
         }
 
-        return self::catalog()->firstWhere('name', $name)['logo'] ?? null;
+        $match = self::catalog()->firstWhere('name', $name);
+
+        return $match['logo'] ?? null;
     }
 
     public static function sortOrder(string $name): int

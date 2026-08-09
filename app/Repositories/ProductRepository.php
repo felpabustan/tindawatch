@@ -8,7 +8,7 @@ use App\Models\Product;
 use App\Models\StockMovement;
 use App\Models\Store;
 use App\Models\User;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 class ProductRepository implements ProductRepositoryInterface
