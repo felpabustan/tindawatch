@@ -44,6 +44,8 @@ export function useResultModal() {
                 return 'The action could not be completed. Please try again.';
             case 'error':
                 return 'Something unexpected happened. Please try again.';
+            default:
+                return 'Something unexpected happened. Please try again.';
         }
     });
 

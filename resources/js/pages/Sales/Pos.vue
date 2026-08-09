@@ -78,6 +78,7 @@ const cashInput = ref<HTMLInputElement | null>(null);
 
 const filteredProducts = computed(() => {
     const q = query.value.trim().toLowerCase();
+
     if (!q) {
         return props.products;
     }
@@ -113,10 +114,12 @@ const changeCentavos = computed(() => {
 
 function addToCart(product: (typeof props.products)[number]) {
     const existing = cart.value.find((line) => line.product_id === product.id);
+
     if (existing) {
         if (existing.quantity < product.stock_qty) {
             existing.quantity += 1;
         }
+
         return;
     }
 
@@ -131,9 +134,11 @@ function addToCart(product: (typeof props.products)[number]) {
 
 function updateQty(productId: number, quantity: number) {
     const line = cart.value.find((item) => item.product_id === productId);
+
     if (!line) {
         return;
     }
+
     line.quantity = Math.max(1, Math.min(quantity, line.stock_qty));
 }
 
@@ -155,11 +160,13 @@ function checkout() {
 
     if (cart.value.length === 0) {
         formError.value = 'Add at least one product.';
+
         return;
     }
 
     if (paymentMethod.value === 'utang' && !customerId.value) {
         formError.value = 'Select a customer for utang.';
+
         return;
     }
 
@@ -168,6 +175,7 @@ function checkout() {
         gcashReference.value = '';
         gcashModalOpen.value = true;
         nextTick(() => gcashInput.value?.focus());
+
         return;
     }
 
@@ -176,6 +184,7 @@ function checkout() {
         cashTendered.value = '';
         cashModalOpen.value = true;
         nextTick(() => cashInput.value?.focus());
+
         return;
     }
 
@@ -187,6 +196,7 @@ function confirmGcashSale() {
 
     if (!reference) {
         gcashError.value = 'Enter the GCash reference number.';
+
         return;
     }
 
@@ -197,11 +207,13 @@ function confirmGcashSale() {
 function confirmCashSale() {
     if (tenderedCentavos.value === null) {
         cashError.value = 'Enter the cash tendered.';
+
         return;
     }
 
     if (tenderedCentavos.value < total.value) {
         cashError.value = 'Cash tendered is less than the total.';
+
         return;
     }
 
@@ -259,11 +271,13 @@ function submitSale(
 
                 if (paymentMethod.value === 'cash' && cashModalOpen.value) {
                     cashError.value = message || 'Failed to process sale';
+
                     return;
                 }
 
                 if (paymentMethod.value === 'gcash' && gcashModalOpen.value) {
                     gcashError.value = message || 'Failed to process sale';
+
                     return;
                 }
 

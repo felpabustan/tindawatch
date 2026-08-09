@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import { Head, Link } from '@inertiajs/vue3';
 import {
     AlertTriangle,
@@ -8,6 +7,7 @@ import {
     ShoppingCart,
     Wallet,
 } from '@lucide/vue';
+import { computed } from 'vue';
 import { Badge } from '@/components/ui/badge';
 import { formatPesos } from '@/lib/money';
 import { dashboard } from '@/routes';

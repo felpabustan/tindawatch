@@ -499,19 +499,13 @@ function isPresetActive(preset: 'today' | 'yesterday' | '7days' | 'month'): bool
                         size="sm"
                         :variant="link.active ? 'default' : 'outline'"
                     >
-                        <Link
-                            :href="link.url"
-                            preserve-scroll
-                            v-html="link.label"
-                        />
+                        <Link :href="link.url" preserve-scroll>
+                            <span v-html="link.label" />
+                        </Link>
                     </Button>
-                    <Button
-                        v-else
-                        size="sm"
-                        variant="outline"
-                        disabled
-                        v-html="link.label"
-                    />
+                    <Button v-else size="sm" variant="outline" disabled>
+                        <span v-html="link.label" />
+                    </Button>
                 </template>
             </div>
         </section>
