@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Actions\Fortify\CreateNewUser;
 use App\Enums\StoreRole;
 use App\Models\Store;
 use App\Models\User;
@@ -12,19 +13,21 @@ class StoreOnboardingTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_registration_creates_a_store_and_owner_membership(): void
+    public function test_creating_a_user_also_creates_a_store_and_owner_membership(): void
     {
-        $response = $this->post(route('register.store'), [
+        $user = app(CreateNewUser::class)->create([
             'name' => 'Juan Dela Cruz',
             'email' => 'juan@example.com',
             'password' => 'password',
             'password_confirmation' => 'password',
         ]);
 
-        $response->assertRedirect(route('dashboard'));
-
-        $user = User::query()->where('email', 'juan@example.com')->firstOrFail();
         $store = Store::query()->where('owner_id', $user->id)->firstOrFail();
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'email' => 'juan@example.com',
+        ]);
 
         $this->assertDatabaseHas('store_user', [
             'store_id' => $store->id,
