@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Actions\Fortify\CreateNewUser;
 use App\Enums\StoreRole;
 use App\Models\Store;
-use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

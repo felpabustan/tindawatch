@@ -20,7 +20,10 @@ defineProps<{
                         />
                         <span class="sr-only">TindaWatch</span>
                     </div>
-                    <div v-if="title || description" class="space-y-2 text-center">
+                    <div
+                        v-if="title || description"
+                        class="space-y-2 text-center"
+                    >
                         <h1 v-if="title" class="text-xl font-medium">
                             {{ title }}
                         </h1>
