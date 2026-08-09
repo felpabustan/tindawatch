@@ -9,6 +9,10 @@ abstract class TestCase extends BaseTestCase
 {
     protected function setUp(): void
     {
+        if (! file_exists(database_path('testing.sqlite'))) {
+            touch(database_path('testing.sqlite'));
+        }
+
         parent::setUp();
 
         $this->withoutVite();
