@@ -13,11 +13,13 @@ use Illuminate\Support\Carbon;
  * @property int $store_id
  * @property string $name
  * @property int $current_float
+ * @property int $cash_on_hand
  * @property int $low_float_threshold
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Store $store
  * @property-read Collection<int, EwalletTransaction> $transactions
+ * @property-read Collection<int, EwalletDayClose> $dayCloses
  */
 class EwalletProvider extends Model
 {
@@ -25,6 +27,7 @@ class EwalletProvider extends Model
         'store_id',
         'name',
         'current_float',
+        'cash_on_hand',
         'low_float_threshold',
     ];
 
@@ -32,6 +35,7 @@ class EwalletProvider extends Model
     {
         return [
             'current_float' => 'integer',
+            'cash_on_hand' => 'integer',
             'low_float_threshold' => 'integer',
         ];
     }
@@ -44,6 +48,11 @@ class EwalletProvider extends Model
     public function transactions(): HasMany
     {
         return $this->hasMany(EwalletTransaction::class, 'provider_id');
+    }
+
+    public function dayCloses(): HasMany
+    {
+        return $this->hasMany(EwalletDayClose::class, 'provider_id');
     }
 
     public function isLowFloat(): bool

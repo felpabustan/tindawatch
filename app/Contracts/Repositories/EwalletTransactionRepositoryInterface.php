@@ -36,4 +36,14 @@ interface EwalletTransactionRepositoryInterface
      * @return Collection<int, object{provider: mixed, type: mixed, count: mixed, amount: mixed, fees: mixed}>
      */
     public function totalsByProviderBetween(Store $store, CarbonInterface $from, CarbonInterface $to): Collection;
+
+    /**
+     * @return array{cash_in: int, cash_out: int, fees: int, count: int}
+     */
+    public function totalsForProviderBetween(
+        Store $store,
+        int $providerId,
+        CarbonInterface $from,
+        CarbonInterface $to,
+    ): array;
 }

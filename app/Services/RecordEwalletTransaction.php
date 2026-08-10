@@ -44,20 +44,26 @@ class RecordEwalletTransaction
         return DB::transaction(function () use ($store, $provider, $user, $type, $amount, $serviceFee, $customerRef) {
             $provider = $this->providers->findForUpdate($provider->id);
 
-            // Cash-in: customer pays cash, agent sends e-money → digital float decreases.
-            // Cash-out: customer receives cash, agent receives e-money → digital float increases.
-            $delta = match ($type) {
-                EwalletTransactionType::CashIn => -$amount,
-                EwalletTransactionType::CashOut => $amount,
+            // Cash-in: customer pays cash, agent sends e-money → float down, cash up.
+            // Cash-out: customer receives cash, agent receives e-money → float up, cash down.
+            // Fees are stored only during the day; settled from float at close day.
+            [$floatDelta, $cashDelta] = match ($type) {
+                EwalletTransactionType::CashIn => [-$amount, $amount],
+                EwalletTransactionType::CashOut => [$amount, -$amount],
             };
 
-            $newFloat = $provider->current_float + $delta;
+            $newFloat = $provider->current_float + $floatDelta;
+            $newCash = $provider->cash_on_hand + $cashDelta;
 
             if ($newFloat < 0) {
                 throw new InvalidArgumentException('Insufficient e-wallet float.');
             }
 
-            $this->providers->updateFloat($provider, $newFloat);
+            if ($newCash < 0) {
+                throw new InvalidArgumentException('Insufficient e-wallet cash on hand.');
+            }
+
+            $this->providers->updateBalances($provider, $newFloat, $newCash);
 
             $transaction = $this->transactions->create([
                 'store_id' => $store->id,
@@ -73,6 +79,7 @@ class RecordEwalletTransaction
                 'amount' => $amount,
                 'service_fee' => $serviceFee,
                 'float' => $newFloat,
+                'cash_on_hand' => $newCash,
             ]);
 
             return $transaction;
