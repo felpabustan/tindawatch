@@ -49,6 +49,7 @@ Route::middleware(['auth', 'verified', 'store'])->group(function () {
     Route::get('ewallet', [EwalletController::class, 'index'])->name('ewallet.index');
     Route::post('ewallet/providers', [EwalletController::class, 'storeProvider'])->name('ewallet.providers.store');
     Route::post('ewallet/transactions', [EwalletController::class, 'storeTransaction'])->name('ewallet.transactions.store');
+    Route::post('ewallet/providers/{provider}/close-day', [EwalletController::class, 'closeDay'])->name('ewallet.providers.close-day');
 
     Route::get('team', [TeamController::class, 'index'])->name('team.index');
     Route::post('team', [TeamController::class, 'store'])->name('team.store');

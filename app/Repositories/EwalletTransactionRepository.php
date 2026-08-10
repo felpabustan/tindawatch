@@ -74,4 +74,43 @@ class EwalletTransactionRepository implements EwalletTransactionRepositoryInterf
                 DB::raw('COALESCE(SUM(ewallet_transactions.service_fee), 0) as fees'),
             ]);
     }
+
+    public function totalsForProviderBetween(
+        Store $store,
+        int $providerId,
+        CarbonInterface $from,
+        CarbonInterface $to,
+    ): array {
+        $rows = EwalletTransaction::query()
+            ->where('store_id', $store->id)
+            ->where('provider_id', $providerId)
+            ->whereBetween('created_at', [$from, $to])
+            ->toBase()
+            ->selectRaw('type, COUNT(*) as count, COALESCE(SUM(amount), 0) as amount, COALESCE(SUM(service_fee), 0) as fees')
+            ->groupBy('type')
+            ->get();
+
+        $cashIn = 0;
+        $cashOut = 0;
+        $fees = 0;
+        $count = 0;
+
+        foreach ($rows as $row) {
+            $count += (int) $row->count;
+            $fees += (int) $row->fees;
+
+            if ($row->type === 'cash_in') {
+                $cashIn += (int) $row->amount;
+            } else {
+                $cashOut += (int) $row->amount;
+            }
+        }
+
+        return [
+            'cash_in' => $cashIn,
+            'cash_out' => $cashOut,
+            'fees' => $fees,
+            'count' => $count,
+        ];
+    }
 }

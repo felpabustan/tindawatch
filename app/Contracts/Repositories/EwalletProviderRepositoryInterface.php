@@ -23,4 +23,6 @@ interface EwalletProviderRepositoryInterface
     public function findForUpdate(int $providerId): EwalletProvider;
 
     public function updateFloat(EwalletProvider $provider, int $float): EwalletProvider;
+
+    public function updateBalances(EwalletProvider $provider, int $float, int $cashOnHand): EwalletProvider;
 }

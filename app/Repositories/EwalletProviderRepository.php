@@ -39,4 +39,14 @@ class EwalletProviderRepository implements EwalletProviderRepositoryInterface
 
         return $provider;
     }
+
+    public function updateBalances(EwalletProvider $provider, int $float, int $cashOnHand): EwalletProvider
+    {
+        $provider->update([
+            'current_float' => $float,
+            'cash_on_hand' => $cashOnHand,
+        ]);
+
+        return $provider;
+    }
 }
