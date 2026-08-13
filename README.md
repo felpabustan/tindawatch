@@ -21,7 +21,7 @@ cp .env.example .env
 App: [http://localhost:8088](http://localhost:8088)  
 Mailpit: [http://localhost:18025](http://localhost:18025)
 
-Host ports are offset (`8088`, `33088`, `6388`, `18025`, …) so they don’t clash with EasySigns Docker services.
+Host ports are offset (`8088`, `33088`, `6388`, `18025`, …) so they don’t clash with your local Docker services already existing.
 
 Current plan allows up to **3 stores per owner** (`TINDAWATCH_MAX_STORES`).
 
